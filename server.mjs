@@ -12,14 +12,15 @@ const io = new Server(server);
 // express приложение может принимать json
 app.use(express.json());
 
-const rooms = new Map();
+const roomsDB = new Map();
+const usersRoomsDB = new Map();
 
-app.get("/rooms/:id", (request, response) => {
+app.get("/room/:id", (request, response) => {
     const roomId = request.params.id;
-    const obj = rooms.has(roomId)
+    const obj = roomsDB.has(roomId)
         ? {
-            users: [...rooms.get(roomId).get("users").values()],
-            messages: [...rooms.get(roomId).get("messages").values()]
+            users: [...roomsDB.get(roomId).get("users").values()],
+            messages: [...roomsDB.get(roomId).get("messages").values()]
         }
         : {
             users: [],
@@ -28,12 +29,29 @@ app.get("/rooms/:id", (request, response) => {
     response.json(obj);
 });
 
-app.post("/rooms", (request, response) => {
+app.get("/user/:id", (request, response) => {
+    const userId = request.params.id;
+    const obj = usersRoomsDB.has(userId)
+        ? {
+            rooms: [...usersRoomsDB.get(userId).get("rooms").values()],
+        }
+        : {
+            rooms: [],
+        };
+    response.json(obj);
+});
+
+app.post("/room", (request, response) => {
     const {roomId, userName} = request.body;
-    if (!rooms.has(roomId)) {
-        rooms.set(roomId, new Map([
+    if (!roomsDB.has(roomId)) {
+        roomsDB.set(roomId, new Map([
             ["users", new Map()],
             ["messages", []],
+        ]));
+    }
+    if (!usersRoomsDB.has(userName)) {
+        usersRoomsDB.set(userName, new Map([
+            ["rooms", new Map()],
         ]));
     }
     response.send();
@@ -44,9 +62,9 @@ io.on("connection", socket => {
         // подключение к сокету в определённую комнату
         socket.join(roomId);
         // сохраняем в "БД" пользователя
-        rooms.get(roomId).get("users").set(socket.id, userName);
+        roomsDB.get(roomId).get("users").set(socket.id, userName);
         // коллекция всех пользователей в комнате
-        const users = [...rooms.get(roomId).get("users").values()];
+        const users = [...roomsDB.get(roomId).get("users").values()];
         // всем кроме меня, в определённой комнате, отправляем сокет запрос коллекции пользователей
         socket.broadcast.to(roomId).emit("ROOM:SET_USERS", users);
     });
@@ -54,13 +72,13 @@ io.on("connection", socket => {
     socket.on("ROOM:NEW_MESSAGE", ({roomId, userName, text}) => {
         const obj = {userName, text};
         // добавляю сообщение в БД
-        rooms.get(roomId).get("messages").push(obj);
+        roomsDB.get(roomId).get("messages").push(obj);
         // оповещаю пользователей в комнате
         socket.broadcast.to(roomId).emit("ROOM:NEW_MESSAGE", obj);
     });
 
     socket.on("disconnect", () => {
-        rooms.forEach(((value, roomId) => {
+        roomsDB.forEach(((value, roomId) => {
             if (value.get("users").delete(socket.id)) {
                 // получаем актуальный список всех пользователей
                 const users = [...value.get("users").values()];

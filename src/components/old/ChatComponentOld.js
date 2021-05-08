@@ -1,7 +1,7 @@
 import {Grid, makeStyles, useTheme} from "@material-ui/core";
-import {Chat} from "./chat/Chat";
-import {PeopleComponent} from "./people/PeopleComponent";
-import {RoomsContainer} from "./rooms/RoomsContainer";
+import {Chat} from "../chatRoom/chat/Chat";
+import {PeopleComponent} from "../chatRoom/people/PeopleComponent";
+import {RoomsContainer} from "../chatRoom/rooms/RoomsContainer";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -10,20 +10,20 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export const ChatComponent = ({users, messages, userName, roomId, onAddMessage}) => {
+export const ChatComponentOld = ({users, messages, userName, roomId, onAddMessage}) => {
     const theme = useTheme();
     const classes = useStyles(theme);
 
     return (
         <>
             <Grid container className={classes.root}>
-                <Grid item>
+                <Grid item sm={2}>
                     <RoomsContainer roomsId={roomId}/>
                 </Grid>
-                <Grid item>
+                <Grid item sm={5}>
                     <Chat messages={messages} userName={userName} roomId={roomId} onAddMessage={onAddMessage}/>
                 </Grid>
-                <Grid item>
+                <Grid item sm={2}>
                     <PeopleComponent users={users}/>
                 </Grid>
             </Grid>

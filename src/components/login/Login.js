@@ -1,7 +1,6 @@
 import {Formik, Form, Field} from "formik";
 import {TextField} from "formik-material-ui";
 import {Box, Button, LinearProgress, makeStyles, Paper, useTheme} from "@material-ui/core";
-import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,25 +14,26 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export const LoginComponent = ({onLogin}) => {
+export const Login = ({onEnter}) => {
     const theme = useTheme();
     const classes = useStyles(theme);
-
-    const onEnter = (values, setSubmitting) => {
-        axios.post("/rooms", values)
-            .then(() => {
-                onLogin(values);
-                setSubmitting(false);
-            });
-    };
 
     return (
         <Paper className={classes.root} elevation={3}>
             <Formik
                 initialValues={{
-                    roomId: "",
                     userName: "",
+                    roomId: "",
                 }}
+                validate={(values => {
+                    const errors = {};
+                    if (!values.userName) {
+                        errors.userName = "Required";
+                    } else if (!values.roomId) {
+                        errors.roomId = "Required";
+                    }
+                    return errors;
+                })}
                 onSubmit={(values, {setSubmitting}) => onEnter(values, setSubmitting)}
             >
                 {({submitForm, isSubmitting}) => (
@@ -41,18 +41,19 @@ export const LoginComponent = ({onLogin}) => {
                         <Box margin={1}>
                             <Field
                                 component={TextField}
-                                name={"roomId"}
-                                type={"roomId"}
-                                label={"Room ID"}
+                                name={"userName"}
+                                type={"userName"}
+                                label={"Name"}
+                                helperText={"Enter your name"}
                             />
                         </Box>
                         <Box margin={1}>
                             <Field
                                 component={TextField}
-                                name={"userName"}
-                                type={"userName"}
-                                label={"Name"}
-                                helperText={"Enter your name"}
+                                name={"roomId"}
+                                type={"roomId"}
+                                label={"Room ID"}
+                                helperText={"Create your first room or insert the invitation link"}
                             />
                         </Box>
                         {isSubmitting && <LinearProgress/>}

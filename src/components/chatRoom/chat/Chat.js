@@ -8,14 +8,12 @@ import {useEffect, useRef} from "react";
 const useStyles = makeStyles(theme => ({
     root: {
         height: "90vh",
-        width: "40vw",
         padding: theme.spacing(1),
         display: "flex",
         flexDirection: "column",
     },
     messages: {
-        flexGrow: 1,
-        height: `calc(100% - 155px)`,
+        height: `calc(100% - 122px)`,
         overflow: "auto",
     },
     button: {

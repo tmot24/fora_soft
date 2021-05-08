@@ -3,7 +3,6 @@ import {makeStyles, Paper, Typography, useTheme} from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
     root: {
         height: "90vh",
-        width: "20vw",
         padding: theme.spacing(1),
         display: "flex",
         flexDirection: "column",
@@ -18,7 +17,7 @@ export const PeopleComponent = ({users}) => {
         <Paper className={classes.root} elevation={3}>
             <Typography>Online: {users.length}</Typography>
             {
-                users.map((name, index) => <Typography key={index}>{name}</Typography>)
+                users.map((name, index) => <Typography noWrap key={index}>{name}</Typography>)
             }
         </Paper>
     )

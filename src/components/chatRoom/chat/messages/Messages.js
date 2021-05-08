@@ -8,6 +8,9 @@ const useStyles = makeStyles(theme => ({
     paper: {
         margin: theme.spacing(1),
         padding: theme.spacing(1),
+    },
+    text: {
+        wordWrap: "break-word",
     }
 }));
 
@@ -20,8 +23,8 @@ export const Messages = ({messages}) => {
             {
                 messages.map((messages, index) =>
                     <Paper className={classes.paper} key={index} elevation={3}>
-                        <Typography variant={"h6"}>{messages.userName}</Typography>
-                        <Typography variant={"body1"}>{messages.text}</Typography>
+                        <Typography className={classes.text} variant={"h6"}>{messages.userName}</Typography>
+                        <Typography className={classes.text} variant={"body1"}>{messages.text}</Typography>
                     </Paper>
                 )
             }

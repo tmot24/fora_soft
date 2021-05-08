@@ -1,3 +1,4 @@
+/*
 export const Reducer = (state, action) => {
     switch (action.type) {
         case "JOINED": {
@@ -30,4 +31,4 @@ export const Reducer = (state, action) => {
         default:
             return state;
     }
-};
+};*/
