@@ -50,7 +50,10 @@ export const App = () => {
         });
         socket.emit("ROOM:JOIN", values);
         const {data} = await axios.get(`/rooms/${values.roomId}`);
-        setUsers(data.users);
+        dispatch({
+            type: "SET_DATA",
+            payload: data,
+        });
     };
 
     const classes = useStyles(theme);
