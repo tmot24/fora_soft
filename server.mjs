@@ -57,8 +57,10 @@ app.post("/user", (request, response) => {
     const {userName, roomId} = request.body;
     if (!usersRoomsDB.has(userName)) {
         usersRoomsDB.set(userName, new Map([
-            ["rooms", new Map([]).set("rooms", roomId)],
+            ["rooms", new Set([roomId])],
         ]));
+    } else {
+        usersRoomsDB.get(userName).get("rooms").add(roomId);
     }
     response.send();
 });

@@ -1,22 +1,26 @@
-import {onAddMessage, userRooms} from "../redux/Reducer";
+import {onAddMessage, onLogin, onSendRoomThank, setRoomId, userRooms} from "../redux/Reducer";
 import {connect} from "react-redux";
 import PreLoginWithOut from "../login/LoginWithoutRoomContainer";
 import {Room} from "./ChatRoom";
 import {addRoomToCollection, login} from "../api/Api";
+import {useHistory} from "react-router-dom";
 
 
 const ChatRoomContainer = ({
-                               joined, users, messages, userName, roomId, onAddMessage, rooms
+                               joined, users, messages, userName, roomId, onAddMessage, rooms, userRooms, onLogin,
+                               login, addRoomToCollection, onSendRoomThank
                            }) => {
 
-    const onSendRoom = (roomName) => {
-        console.log(roomName);
-        addRoomToCollection({userName, roomName})
-            .then(data =>
-                console.log(data)
-            )
+    const history = useHistory();
+    const onSendRoom = (values) => {
+        alert("not implemented :(")
+        onSendRoomThank(values);
+        history.push(`/${values.roomId}`);
+    };
 
-    }
+    const changeRoom = (values) => {
+        console.log(values);
+    };
 
     return (
         <>
@@ -24,7 +28,7 @@ const ChatRoomContainer = ({
                 !joined
                     ? <PreLoginWithOut/>
                     : <Room messages={messages} userName={userName} users={users} roomId={roomId}
-                            onAddMessage={onAddMessage} rooms={rooms} onSendRoom={onSendRoom}/>
+                            onAddMessage={onAddMessage} rooms={rooms} onSendRoom={onSendRoom} changeRoom={changeRoom}/>
             }
         </>
 
@@ -43,7 +47,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    onAddMessage, addRoomToCollection,
+    onAddMessage, addRoomToCollection, userRooms, setRoomId, onLogin, login, onSendRoomThank,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatRoomContainer);

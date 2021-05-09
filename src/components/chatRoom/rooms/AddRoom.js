@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export const AddRoom = ({onSendRoom}) => {
+export const AddRoom = ({onSendRoom, userName}) => {
     const theme = useTheme();
     const classes = useStyles(theme);
 
@@ -18,10 +18,18 @@ export const AddRoom = ({onSendRoom}) => {
             initialValues={{
                 roomName: "",
             }}
+            validate={(values => {
+                const errors = {};
+                if (!values.roomName) {
+                    errors.roomName = "Required";
+                }
+                return errors;
+            })}
             onSubmit={(values, {setSubmitting, resetForm}) => {
                 setSubmitting(false);
                 resetForm({roomName: ""});
-                onSendRoom(values.roomName);
+                const roomId = values.roomName;
+                onSendRoom({userName, roomId});
             }}
             type={"reset"}
         >
@@ -51,5 +59,5 @@ export const AddRoom = ({onSendRoom}) => {
                 </Form>
             )}
         </Formik>
-    )
-}
+    );
+};

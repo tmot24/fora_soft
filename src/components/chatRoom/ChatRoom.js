@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export const Room = ({roomId, messages, userName, users, onAddMessage, rooms, onSendRoom={onSendRoom}}) => {
+export const Room = ({roomId, messages, userName, users, onAddMessage, rooms, onSendRoom, changeRoom}) => {
     const theme = useTheme();
     const classes = useStyles(theme);
 
@@ -35,7 +35,9 @@ export const Room = ({roomId, messages, userName, users, onAddMessage, rooms, on
     return (
         <Grid container className={classes.root}>
             <Grid item sm={2}>
-                <RoomsContainer roomId={roomId} rooms={rooms} onSendRoom={onSendRoom}/>
+                <RoomsContainer roomId={roomId} rooms={rooms} onSendRoom={onSendRoom} changeRoom={changeRoom}
+                                userName={userName}
+                />
             </Grid>
             <Grid item sm={5}>
                 <Chat messages={messages} onSendMessage={onSendMessage}/>

@@ -1,4 +1,4 @@
-import {dataRoom, myRooms} from "../api/Api";
+import {addRoomToCollection, dataRoom, login, myRooms} from "../api/Api";
 
 const initialState = {
     joined: false,
@@ -17,6 +17,7 @@ export const Reducer = (state = initialState, action) => {
                 joined: true,
                 userName: action.payload.userName,
                 roomId: action.payload.roomId,
+                rooms: [...state.rooms, action.payload.roomId]
             };
         }
         case "SET_DATA": {
@@ -35,13 +36,19 @@ export const Reducer = (state = initialState, action) => {
         case "SET_ROOMS": {
             return {
                 ...state,
-                rooms: [...state.rooms, action.payload],
+                rooms: [...state.rooms, action.payload]
             };
         }
         case "NEW_MESSAGE": {
             return {
                 ...state,
                 messages: [...state.messages, action.payload],
+            };
+        }
+        case "SET_ROOM_ID": {
+            return {
+                ...state,
+                roomId: action.payload,
             };
         }
         default:
@@ -67,9 +74,9 @@ export const userRooms = (values) => (dispatch) => {
         dispatch({
             type: "SET_ROOMS",
             payload: data.data.rooms,
-        })
-    })
-}
+        });
+    });
+};
 
 export const setUsers = (users) => (dispatch) => {
     dispatch({
@@ -78,9 +85,27 @@ export const setUsers = (users) => (dispatch) => {
     });
 };
 
+export const setRoomId = (roomId) => (dispatch) => {
+    dispatch({
+        type: "SET_ROOM_ID",
+        payload: roomId,
+    });
+};
+
 export const onAddMessage = (message) => (dispatch) => {
     dispatch({
         type: "NEW_MESSAGE",
         payload: message,
+    });
+};
+
+export const onSendRoomThank = (values) => (dispatch) => {
+    Promise.all([
+        login(values),
+        addRoomToCollection(values),
+    ]).then(() => {
+        onLogin(values);
+        dispatch(setRoomId(values.roomId));
+        dispatch(userRooms(values.roomId));
     });
 };

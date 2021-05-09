@@ -14,6 +14,6 @@ export const dataRoom = (values) => {
     return axios.get(`/room/${values.roomId}`);
 };
 
-export const myRooms = (userId) => {
-    return axios.get(`/user/${userId}`)
+export const myRooms = (values) => {
+    return axios.get(`/user/${values.userName}`)
 }
