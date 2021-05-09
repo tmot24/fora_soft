@@ -42,16 +42,22 @@ app.get("/user/:id", (request, response) => {
 });
 
 app.post("/room", (request, response) => {
-    const {roomId, userName} = request.body;
+    const {roomId} = request.body;
     if (!roomsDB.has(roomId)) {
         roomsDB.set(roomId, new Map([
             ["users", new Map()],
             ["messages", []],
+            ["date", []],
         ]));
     }
+    response.send();
+});
+
+app.post("/user", (request, response) => {
+    const {userName, roomId} = request.body;
     if (!usersRoomsDB.has(userName)) {
         usersRoomsDB.set(userName, new Map([
-            ["rooms", new Map()],
+            ["rooms", new Map([]).set("rooms", roomId)],
         ]));
     }
     response.send();
@@ -69,8 +75,8 @@ io.on("connection", socket => {
         socket.broadcast.to(roomId).emit("ROOM:SET_USERS", users);
     });
 
-    socket.on("ROOM:NEW_MESSAGE", ({roomId, userName, text}) => {
-        const obj = {userName, text};
+    socket.on("ROOM:NEW_MESSAGE", ({roomId, userName, text, date}) => {
+        const obj = {userName, text, date};
         // добавляю сообщение в БД
         roomsDB.get(roomId).get("messages").push(obj);
         // оповещаю пользователей в комнате

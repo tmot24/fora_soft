@@ -4,7 +4,7 @@ import LoginComponent from "../login/LoginContainer";
 import ChatComponent from "../chatRoom/ChatRoomContainer";
 import {useEffect} from "react";
 import {socket} from "../socket/Socket";
-import {onAddMessage, onLogin, setUsers} from "../redux/Reducer";
+import {onAddMessage, setUsers} from "../redux/Reducer";
 import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
@@ -37,16 +37,12 @@ const App = ({setUsers, onAddMessage}) => {
 
 const mapStateToProps = (state) => {
     return {
-        joined: state.reducer.joined,
-        roomId: state.reducer.roomId,
-        userName: state.reducer.userName,
-        users: state.reducer.users,
-        messages: state.reducer.messages,
+
     };
 };
 
 const mapDispatchToProps = {
-    setUsers, onAddMessage, onLogin,
+    setUsers, onAddMessage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

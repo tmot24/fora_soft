@@ -1,5 +1,6 @@
-import {makeStyles, Paper, Typography, useTheme} from "@material-ui/core";
+import {List, ListItem, ListItemText, makeStyles, Paper, Typography, useTheme} from "@material-ui/core";
 import {AddRoom} from "./AddRoom";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -14,13 +15,24 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const RoomsContainer = ({roomId}) => {
+export const RoomsContainer = ({roomId, rooms, onSendRoom}) => {
     const theme = useTheme();
+    const history = useHistory();
     const classes = useStyles(theme);
+
     return (
         <Paper className={classes.root} elevation={3}>
-            <Typography noWrap className={classes.rooms}>Room {roomId}</Typography>
-            <AddRoom/>
+            <Typography noWrap>Current room {roomId}</Typography>
+            <List className={classes.rooms}>
+                {
+                    rooms.map((room, index) =>
+                        <ListItem button key={index} onClick={() => history.push(room)}>
+                            <ListItemText>{room}</ListItemText>
+                        </ListItem>
+                    )
+                }
+            </List>
+            <AddRoom onSendRoom={onSendRoom}/>
         </Paper>
-    )
-}
+    );
+};

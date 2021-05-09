@@ -1,8 +1,8 @@
 import {Login} from "./Login";
-import {onAddMessage, onLogin, setUsers} from "../redux/Reducer";
+import {onLogin} from "../redux/Reducer";
 import {connect} from "react-redux";
 import {useHistory} from "react-router-dom";
-import {login} from "../api/Api";
+import {addRoomToCollection, login} from "../api/Api";
 
 
 const LoginContainer = ({onLogin}) => {
@@ -16,12 +16,14 @@ const LoginContainer = ({onLogin}) => {
             roomId = arrayMatch[0].slice(1);
         }
         const newValues = {userName, roomId};
-        login(newValues)
-            .then(() => {
-                onLogin(newValues);
-                setSubmitting(false);
-                history.push(`/${newValues.roomId}`);
-            });
+        Promise.all([
+            login(newValues),
+            addRoomToCollection(newValues),
+        ]).then(() => {
+            onLogin(newValues);
+            setSubmitting(false);
+            history.push(`/${newValues.roomId}`);
+        });
     };
 
     return (
@@ -32,16 +34,11 @@ const LoginContainer = ({onLogin}) => {
 
 const mapStateToProps = (state) => {
     return {
-        joined: state.reducer.joined,
-        roomId: state.reducer.roomId,
-        userName: state.reducer.userName,
-        users: state.reducer.users,
-        messages: state.reducer.messages,
     };
 };
 
 const mapDispatchToProps = {
-    setUsers, onAddMessage, onLogin,
+    onLogin,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

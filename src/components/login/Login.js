@@ -7,6 +7,7 @@ const useStyles = makeStyles(theme => ({
         display: "inline-table",
         marginTop: "20vh",
         padding: theme.spacing(1),
+        width: "294"
     },
     button: {
         display: "flex",
@@ -45,6 +46,7 @@ export const Login = ({onEnter}) => {
                                 type={"userName"}
                                 label={"Name"}
                                 helperText={"Enter your name"}
+                                fullWidth={true}
                             />
                         </Box>
                         <Box margin={1}>
@@ -54,6 +56,7 @@ export const Login = ({onEnter}) => {
                                 type={"roomId"}
                                 label={"Room ID"}
                                 helperText={"Create your first room or insert the invitation link"}
+                                fullWidth={true}
                             />
                         </Box>
                         {isSubmitting && <LinearProgress/>}

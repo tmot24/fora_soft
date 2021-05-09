@@ -9,29 +9,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export const AddRoom = () => {
+export const AddRoom = ({onSendRoom}) => {
     const theme = useTheme();
     const classes = useStyles(theme);
-
-/*    useEffect(() => {
-        messagesRef.current.scrollTo(0, 99999);
-    }, [messages]);
-
-    const onSendMessage = (message) => {
-        socket.emit("ROOM:NEW_MESSAGE", {
-            roomId,
-            userName,
-            text: message,
-        });
-        onAddMessage({
-            userName,
-            text: message,
-        });
-    };*/
-
-    const onSendMessage = (roomName) => {
-        console.log(roomName)
-    }
 
     return (
         <Formik
@@ -41,7 +21,7 @@ export const AddRoom = () => {
             onSubmit={(values, {setSubmitting, resetForm}) => {
                 setSubmitting(false);
                 resetForm({roomName: ""});
-                onSendMessage(values.roomName);
+                onSendRoom(values.roomName);
             }}
             type={"reset"}
         >

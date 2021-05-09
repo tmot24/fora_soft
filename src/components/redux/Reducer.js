@@ -1,9 +1,10 @@
-import {dataRoom} from "../api/Api";
+import {dataRoom, myRooms} from "../api/Api";
 
 const initialState = {
     joined: false,
     roomId: null,
     userName: null,
+    rooms: [],
     users: [],
     messages: [],
 };
@@ -31,6 +32,12 @@ export const Reducer = (state = initialState, action) => {
                 users: action.payload,
             };
         }
+        case "SET_ROOMS": {
+            return {
+                ...state,
+                rooms: [...state.rooms, action.payload],
+            };
+        }
         case "NEW_MESSAGE": {
             return {
                 ...state,
@@ -55,6 +62,15 @@ export const onLogin = (values) => async (dispatch) => {
     });
 };
 
+export const userRooms = (values) => (dispatch) => {
+    myRooms(values).then(data => {
+        dispatch({
+            type: "SET_ROOMS",
+            payload: data.data.rooms,
+        })
+    })
+}
+
 export const setUsers = (users) => (dispatch) => {
     dispatch({
         type: "SET_USERS",
@@ -68,4 +84,3 @@ export const onAddMessage = (message) => (dispatch) => {
         payload: message,
     });
 };
-

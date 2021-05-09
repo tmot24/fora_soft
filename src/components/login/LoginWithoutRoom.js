@@ -8,11 +8,12 @@ const useStyles = makeStyles(theme => ({
         display: "inline-table",
         marginTop: "20vh",
         padding: theme.spacing(1),
+        width: 294,
     },
     button: {
         display: "flex",
         justifyContent: "flex-end"
-    }
+    },
 }));
 
 export const LoginWithoutRoom = ({onEnter}) => {
@@ -47,6 +48,7 @@ export const LoginWithoutRoom = ({onEnter}) => {
                                 type={"userName"}
                                 label={"Name"}
                                 helperText={"Enter your name"}
+                                fullWidth={true}
                             />
                         </Box>
                         {isSubmitting && <LinearProgress/>}

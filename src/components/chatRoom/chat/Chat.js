@@ -2,7 +2,6 @@ import {Box, Button, LinearProgress, makeStyles, Paper, useTheme} from "@materia
 import {Field, Form, Formik} from "formik";
 import {TextField} from "formik-material-ui";
 import {Messages} from "./messages/Messages";
-import {socket} from "../../socket/Socket";
 import {useEffect, useRef} from "react";
 
 const useStyles = makeStyles(theme => ({
@@ -22,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export const Chat = ({messages, userName, roomId, onAddMessage}) => {
+export const Chat = ({messages, onSendMessage}) => {
     const theme = useTheme();
     const classes = useStyles(theme);
     const messagesRef = useRef();
@@ -30,18 +29,6 @@ export const Chat = ({messages, userName, roomId, onAddMessage}) => {
     useEffect(() => {
         messagesRef.current.scrollTo(0, 99999);
     }, [messages]);
-
-    const onSendMessage = (message) => {
-        socket.emit("ROOM:NEW_MESSAGE", {
-            roomId,
-            userName,
-            text: message,
-        });
-        onAddMessage({
-            userName,
-            text: message,
-        });
-    };
 
     return (
         <Paper className={classes.root} elevation={3}>

@@ -16,15 +16,17 @@ const useStyles = makeStyles(theme => ({
 
 export const Messages = ({messages}) => {
     const theme = useTheme();
-
     const classes = useStyles(theme);
+
     return (
         <div className={classes.root}>
             {
                 messages.map((messages, index) =>
                     <Paper className={classes.paper} key={index} elevation={3}>
-                        <Typography className={classes.text} variant={"h6"}>{messages.userName}</Typography>
-                        <Typography className={classes.text} variant={"body1"}>{messages.text}</Typography>
+                        <Typography className={classes.text} variant={"h6"}>User name: {messages.userName}</Typography>
+                        <Typography className={classes.text} variant={"body1"}>Text: {messages.text}</Typography>
+                        <Typography className={classes.text} variant={"body2"}>{messages.date.time}</Typography>
+                        <Typography className={classes.text} variant={"body2"}>{messages.date.day}</Typography>
                     </Paper>
                 )
             }
