@@ -1,14 +1,12 @@
-import {onAddMessage, onLogin, onSendRoomThank, setRoomId, userRooms} from "../redux/Reducer";
+import {onAddMessage, onSendRoomThank} from "../redux/Reducer";
 import {connect} from "react-redux";
 import PreLoginWithOut from "../login/LoginWithoutRoomContainer";
 import {Room} from "./ChatRoom";
-import {addRoomToCollection, login} from "../api/Api";
 import {useHistory} from "react-router-dom";
 
 
 const ChatRoomContainer = ({
-                               joined, users, messages, userName, roomId, onAddMessage, rooms, userRooms, onLogin,
-                               login, addRoomToCollection, onSendRoomThank
+                               joined, users, messages, userName, roomId, onAddMessage, rooms, onSendRoomThank
                            }) => {
 
     const history = useHistory();
@@ -18,8 +16,8 @@ const ChatRoomContainer = ({
         history.push(`/${values.roomId}`);
     };
 
-    const changeRoom = (values) => {
-        console.log(values);
+    const changeRoom = () => {
+        alert("not implemented :(")
     };
 
     return (
@@ -47,7 +45,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    onAddMessage, addRoomToCollection, userRooms, setRoomId, onLogin, login, onSendRoomThank,
+    onAddMessage, onSendRoomThank,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatRoomContainer);

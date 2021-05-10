@@ -26,13 +26,8 @@ const LoginWithoutRoomContainer = ({onLogin, userRooms}) => {
 };
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
     return {
-        joined: state.reducer.joined,
-        roomId: state.reducer.roomId,
-        userName: state.reducer.userName,
-        users: state.reducer.users,
-        messages: state.reducer.messages,
     };
 };
 
